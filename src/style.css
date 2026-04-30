@@ -1,0 +1,32 @@
+/* 全域基礎樣式：設定遊戲的整體風格，像是舞台的背景 */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #2d3436; /* 深灰色背景，像是夜晚的鄉村 */
+  color: #dfe6e9; /* 淺灰白文字，像是月光下的字跡 */
+  font-family: 'Microsoft YaHei', 'SimHei', 'PingFang SC', sans-serif; /* 中文友善字體 */
+  line-height: 1.6;
+}
+
+/* 滾動條樣式 */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #2d3436;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #636e72;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #55efc4;
+}
