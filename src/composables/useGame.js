@@ -35,7 +35,7 @@ function getRandomSnake() {
 // 產生治療事件：農夫被蛇咬的隨機事件
 function generateTreatmentEvent() {
   const snake = getRandomSnake()
-  
+
   let displayName
   if (state.hasManual) {
     // 有買寶典：顯示真實名稱 + 有毒/無毒標註
@@ -45,7 +45,7 @@ function generateTreatmentEvent() {
     // 沒買寶典：只顯示真實名稱，不告訴你是否有毒
     displayName = snake.name
   }
-  
+
   return {
     type: 'treatment', // 事件類型：治療事件
     isVenomous: snake.isVenomous, // 這條蛇實際上有毒嗎
@@ -62,28 +62,37 @@ function handleTreatmentChoice(choice) {
   // 根據選擇和蛇是否有毒來調整數值
   if (choice === 'herb') { // 敷上壓碎的草藥
     if (event.isVenomous) {
-      // 被毒蛇咬：信譽不變，疑心+10，財富+10
+      // 被毒蛇咬：信譽-10，疑心+10，財富+10
+      state.reputation -= 10
       state.suspicion += 10
       state.wealth += 10
-      logMessage = `你敷上壓碎的草藥，但這是毒蛇咬傷，村民感到懷疑。疑心值 +10，財富 +10`
+      if (state.suspicion > 100) state.suspicion = 100// 懷疑值不能大於100
+      if (state.reputation < 0) state.reputation = 0 // 信譽值不能低於0
+      logMessage = `你敷上壓碎的草藥，但這是毒蛇咬傷，村民感到懷疑。信譽值 -10，疑心值 +10，財富 +10`
     } else {
       // 被非毒蛇咬：信譽+20，疑心不變，財富+10
       state.reputation += 20
-      state.wealth += 10
-      logMessage = `你敷上壓碎的草藥，治好了農夫。信譽值 +20，財富 +10`
+      state.wealth += 40
+      if (state.reputation > 100) state.reputation = 100 // 信譽值不能大於100
+      logMessage = `你敷上壓碎的草藥，治好了農夫。信譽值 +20，財富 +40`
     }
   } else if (choice === 'ritual') { // 三巡祭拜與放血
     if (event.isVenomous) {
-      // 被毒蛇咬：信譽不變，疑心+40，財富+40
+      // 被毒蛇咬：信譽-20，疑心+40，財富+40
+      state.reputation -= 20
       state.suspicion += 40
-      state.wealth += 40
-      logMessage = `你進行三巡祭拜與放血，村民覺得這很迷信。疑心值 +40，財富 +40`
+      state.wealth += 20
+      if (state.suspicion > 100) state.suspicion = 100// 懷疑值不能大於100
+      if (state.reputation < 0) state.reputation = 0 // 信譽值不能低於0
+      logMessage = `你進行三巡祭拜與放血，村民覺得這很迷信。信譽值 -20，疑心值 +40，財富 +20`
     } else {
       // 被非毒蛇咬：信譽+40，疑心+20，財富+40
-      state.reputation += 40
-      state.suspicion += 20
+      state.reputation += 20
+      state.suspicion += 40
       state.wealth += 40
-      logMessage = `你進行三巡祭拜與放血，治好了農夫。信譽值 +40，疑心值 +20，財富 +40`
+      if (state.suspicion > 100) state.suspicion = 100// 懷疑值不能大於100
+      if (state.reputation > 100) state.reputation = 100 // 信譽值不能大於100
+      logMessage = `你進行三巡祭拜與放血，治好了農夫。信譽值 +20，疑心值 +40，財富 +40`
     }
   } else if (choice === 'refuse') { // 說自己不會治療
     // 無論是否被毒蛇咬：信譽不變，疑心-20，財富不變
@@ -104,7 +113,7 @@ function handleTreatmentChoice(choice) {
 // 產生特別事件：根據數值來決定遇到什麼NPC
 function generateSpecialEvent() {
   // 優先順序：官員詢問 > 醫師詢問 > 遊商來訪
-  if (state.suspicion > 100) {
+  if (state.suspicion >= 100) {
     return { type: 'official' } // 官員詢問
   } else if (state.reputation >= 100 && state.suspicion < 100) {
     return { type: 'doctor' } // 醫師詢問

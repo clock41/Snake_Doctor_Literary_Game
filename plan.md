@@ -2,6 +2,24 @@
 
 ## Build 紀錄
 
+### 2026-05-05 GitHub Pages 部署設定
+**用戶的話：** GitHub Pages部屬如何操作
+
+**AI 的話：** 加入 GitHub Pages 部署工作流程和 Vite base 設定
+
+**執行步驟：**
+1. 修改 `vite.config.js` 加入 `base: '/snake-doctor-game/'` 設定（需改為實際倉庫名稱）
+2. 建立 `.github/workflows/deploy.yml` GitHub Actions 工作流程
+3. 設定自動建置與部署到 GitHub Pages
+
+**使用者後續操作：**
+1. 在 GitHub 建立倉庫（如 `snake-doctor-game`）
+2. 推送程式碼到 main 分支
+3. 在倉庫 Settings > Pages 啟用 GitHub Actions 部署
+4. 等待 1-2 分鐘即可得到分享網址
+
+---
+
 ### 2026-04-29 第一次建置
 **用戶的話：** 請依據遊戲概念v2.md寫遊戲，可以開始建立
 
@@ -21,10 +39,10 @@
 
 **建置結果：**
 ```
-dist/index.html                  0.58 kB │ gzip:  0.41 kB
-dist/assets/index-3qY3D6uw.css   4.36 kB │ gzip:  1.11 kB
-dist/assets/index-CuocGIKA.js   69.54 kB │ gzip: 27.28 kB
-✓ built in 136ms
+dist/index.html                  0.58 kB │ gzip:  0.40 kB
+dist/assets/index-sXyG5XKI.css   4.36 kB │ gzip:  1.11 kB
+dist/assets/index-ByxqMH7c.js   70.44 kB │ gzip: 27.59 kB
+✓ built in 123ms
 ```
 
 **修正事項：**
@@ -33,5 +51,14 @@ dist/assets/index-CuocGIKA.js   69.54 kB │ gzip: 27.28 kB
 
 ---
 
-## 待修正問題
-- [ ] 事件循環邏輯：應為「5次治療 + 1次特別事件」循環（用戶要求先跳過）
+## 已完成功能
+- [x] 事件循環邏輯：5次治療 + 1次特別事件循環
+- [x] 按鈕 disabled 防護：防止快速點擊導致事件跳轉過快
+- [x] 蛇名顯示邏輯：沒買寶典顯示真實名稱，有買寶典顯示「蛇名(有毒/無毒)」
+- [x] 遊商「不買，離開」選項：避免買完東西後卡住
+- [x] GitHub Pages 部署設定
+
+---
+
+## 待確認事項
+- [ ] `vite.config.js` 中的 `base` 路徑需改為實際 GitHub 倉庫名稱
